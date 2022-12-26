@@ -50,6 +50,9 @@
       "limit": "10 KB"
     }
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@hovoh/ethcall": "^9.9.9",
     "@hovoh/typechain-ethers-multicall": "^10.1.3",
