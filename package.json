@@ -1,11 +1,12 @@
 {
-  "version": "0.2.0",
+  "version": "0.1.0",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
-    "src"
+    "src",
+    "abis"
   ],
   "engines": {
     "node": ">=10"
@@ -35,7 +36,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "qidaoapi",
+  "name": "@hovoh/mai-finance-api",
   "author": "HOVOH",
   "module": "dist/qidaoapi.esm.js",
   "size-limit": [
@@ -62,6 +63,7 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
-    "@hovoh/evmcontractsregistry": "^0.3.3"
+    "@hovoh/evmcontractsregistry": "^0.3.3",
+    "np": "^7.6.2"
   }
 }

@@ -12,7 +12,7 @@ bundled together using [EVMContractsRegistry](https://github.com/HOVOH/web3-serv
 ## How to use
 
 ### install
-`yarn add qidaoapi ethers @hovoh/ethcall`
+`yarn add @hovoh/mai-finance-api ethers @hovoh/ethcall`
 
 @hovoh/ethcall is a package for multicalls. If you're not using multicalls you don't need to install it.
 
