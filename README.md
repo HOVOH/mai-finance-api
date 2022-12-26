@@ -1,11 +1,49 @@
-# TSDX User Guide
+# QiDAO/MAI.FINANCE API
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
+This API is the [typechain for ethers with multicall](https://github.com/HOVOH/TypeChain/tree/master/packages/target-ethers-multicall) bindings 
+bundled together using [EVMContractsRegistry](https://github.com/HOVOH/web3-services/tree/release/packages/EVMContractsRegistry)
 
-> This TSDX setup is meant for developing libraries (not apps!) that can be published to NPM. If you’re looking to build a Node app, you could use `ts-node-dev`, plain `ts-node`, or simple `tsc`.
+## Features
+- Typescript typings
+- Contract addresses included
+- Multichain
+- Multicalls
 
-> If you’re new to TypeScript, checkout [this handy cheatsheet](https://devhints.io/typescript)
+## How to use
 
+### install
+`yarn add qidaoapi ethers @hovoh/ethcall`
+
+@hovoh/ethcall is a package for multicalls. If you're not using multicalls you don't need to install it.
+
+### Using the api
+Initialise your ProvidersRegistry from [EVMContractsRegistry](https://github.com/HOVOH/web3-services/tree/release/packages/EVMContractsRegistry)
+and use the initMaiApi(providers: ProviderRegistry) to initialise the API.
+
+```typescript
+import {providers} from "@hovoh/evmcontractsregistry";
+import {initMaiApi, MaiApi} from "qidaoapi";
+
+const maiApi: MaiApi = initMaiApi(providers);
+```
+
+The MaiApi object has two NetworkContractsRegistry: 
+1. `vaults` has all the vaults
+2. `peripherals` has all the other contracts
+
+Examples:
+
+To query a vault (using multicalls):
+```typescript
+        const wftmVault = maiApi.vaults.forNetwork(Network.OPERA_MAINNET).getContractInstance("WFTMVault");
+        const [symbol, closingFee] = await vaults.forNetwork(Network.OPERA_MAINNET).multiCall((get) => [
+            get("WFTMVault").symbol(),
+            get("WFTMVault").closingFee()
+        ])
+```
+
+
+## DTS - library starter
 ## Commands
 
 TSDX scaffolds your new library inside `/src`.
