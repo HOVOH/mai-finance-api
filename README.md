@@ -31,15 +31,22 @@ The MaiApi object has two NetworkContractsRegistry:
 1. `vaults` has all the vaults
 2. `peripherals` has all the other contracts
 
-Examples:
+**Examples:**
 
 To query a vault (using multicalls):
 ```typescript
-        const wftmVault = maiApi.vaults.forNetwork(Network.OPERA_MAINNET).getContractInstance("WFTMVault");
         const [symbol, closingFee] = await vaults.forNetwork(Network.OPERA_MAINNET).multiCall((get) => [
             get("WFTMVault").symbol(),
             get("WFTMVault").closingFee()
         ])
+```
+
+To query vault available funds:
+```typescript
+import {Network} from "@hovoh/evmcontractsregistry";
+const wftmVault = maiApi.vaults.forNetwork(Network.OPERA_MAINNET)
+    .getContractInstance("WFTMVault");
+const maiBorrowAvailable = maiApi.peripherals.forNetwork(Network.OPERA_MAINNET).getContractInstance("MAI").balanceOf(wftmVault.address)
 ```
 
 
