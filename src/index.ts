@@ -4,7 +4,7 @@ import {
     NetworksContractsRegistry,
     Network,
     ProvidersRegistry,
-    ContractFactory
+    ContractFactory, bindings
 } from "@hovoh/evmcontractsregistry";
 
 // Addresses are from
@@ -15,7 +15,10 @@ const fantomMainnetPeripherals = {
     MAI: contract("0xfb98b335551a418cd0737375a2ea0ded62ea213b", MAI__factory.connect, MAI__factory.multicall, 16653942),
     QI: contract("0x68Aa691a8819B07988B18923F712F3f4C8d36346", QI__factory.connect, QI__factory.multicall, 20746190),
     MasterChef: contract("0x230917f8a262bF9f2C3959eC495b11D1B7E1aFfC", Masterchef__factory.connect, Masterchef__factory.multicall, 22012429),
-}
+} as const;
+
+export type PeripheralsContract = keyof typeof fantomMainnetPeripherals;
+export const peripheralsContract = Object.keys(fantomMainnetPeripherals);
 
 const vault = (address: string, deployedAt: number) => contract(address, Vault__factory.connect, Vault__factory.multicall, deployedAt)
 
@@ -39,24 +42,23 @@ const fantomMainnetVaults = {
     mooBooBTCFTM: vault("0xf34e271312e41bbd7c451b76af2af8339d6f16ed", 22195938),
     mooBooETHFTM: vault("0x9ba01b1279b1f7152b42aca69faf756029a9abde", 22196711),
     mooBIFI: vault("0x75d4ab6843593c111eeb02ff07055009c836a1ef", 23346470)
-}
+} as const;
 
 const namedFactories = {
-    'vault': contract("0x0", Vault__factory.connect, Vault__factory.multicall)
+    'vault': bindings(Vault__factory.connect, Vault__factory.multicall)
 }
 
 export interface IMaiPeripherals {
     [Network.OPERA_MAINNET]: typeof fantomMainnetPeripherals
 }
 
-export interface IMaiVaults {
-    [Network.OPERA_MAINNET]: typeof fantomMainnetVaults
-}
-
 export const maiPeripheral = new NetworksContractsRegistry<IMaiPeripherals, typeof namedFactories>()
 maiPeripheral.addNetwork(Network.OPERA_MAINNET, fantomMainnetPeripherals);
 maiPeripheral.setNamedFactories(namedFactories)
 
+export interface IMaiVaults {
+    [Network.OPERA_MAINNET]: typeof fantomMainnetVaults
+}
 export const maiVaults = new NetworksContractsRegistry<IMaiVaults, typeof namedFactories>()
 maiVaults.addNetwork(Network.OPERA_MAINNET, fantomMainnetVaults);
 maiVaults.setNamedFactories(namedFactories)
@@ -67,6 +69,8 @@ export type MaiApi = {
     peripherals: MaiPeripherals
     vaults: MaiVaults
 }
+export const maiEnabledNetworks = [Network.OPERA_MAINNET] as const
+export type MaiNetworks = typeof maiEnabledNetworks[number];
 
 export const initMaiApi = (providers: ProvidersRegistry): MaiApi => {
     return {
